@@ -117,6 +117,14 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Served behind a reverse proxy (nginx, Render, Railway...) that terminates HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Turn on once the site is served over HTTPS (leave off for plain-http local/Docker runs)
+if env_bool('SECURE_HTTPS'):
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 # CORS: only needed when a frontend on another domain calls the API
 CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS')
 

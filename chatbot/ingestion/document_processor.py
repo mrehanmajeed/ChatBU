@@ -13,6 +13,7 @@ from typing import Any, Dict, List
 from urllib.parse import urlparse
 
 import fitz  # PyMuPDF
+from django.conf import settings
 import requests
 from bs4 import BeautifulSoup
 from langchain_community.document_loaders import WebBaseLoader
@@ -37,7 +38,7 @@ logger = logging.getLogger(__name__)
 EMBEDDING_MODEL = os.getenv('EMBEDDING_MODEL', 'intfloat/e5-base-v2')
 CHUNK_SIZE = int(os.getenv('CHUNK_SIZE', '450'))
 CHUNK_OVERLAP = int(os.getenv('CHUNK_OVERLAP', '75'))
-VECTOR_STORE_PATH = os.getenv('VECTOR_STORE_PATH', 'data/vector_store')
+VECTOR_STORE_PATH = settings.BASE_DIR / os.getenv('VECTOR_STORE_PATH', 'data/vector_store')
 
 SUPPORTED_EXTENSIONS = {'.pdf', '.txt', '.md'}
 

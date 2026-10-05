@@ -1,5 +1,8 @@
 # ChatBU — Chat with your documents
 
+[![tests](https://github.com/mrehanmajeed/ChatBU/actions/workflows/tests.yml/badge.svg)](https://github.com/mrehanmajeed/ChatBU/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 ChatBU is a self-hosted **RAG (Retrieval-Augmented Generation) chatbot**. Drop your PDFs, text or Markdown files into a folder, build the index with one command, and get a chat website + REST API that answers questions **only from your documents**, with sources.
 
 Use it for a university, company handbook, product docs, policies, FAQs — anything.
@@ -119,6 +122,7 @@ All settings are in `.env` (see [`.env.example`](.env.example) for the full list
 | `DEBUG` | `False` | `True` only for local development |
 | `ALLOWED_HOSTS` | — | Your domain(s), comma-separated. Required when `DEBUG=False` |
 | `CSRF_TRUSTED_ORIGINS` | — | e.g. `https://chat.example.com` (needed for admin login over HTTPS) |
+| `SECURE_HTTPS` | `False` | `True` once served over HTTPS: redirects HTTP, secure cookies, HSTS |
 | `CORS_ALLOWED_ORIGINS` | — | Only if a frontend on another domain calls the API |
 | `CHATBOT_NAME` | `ChatBU` | Title shown in the chat UI |
 | `RATE_LIMIT` | `20/min` | Max questions per IP |
@@ -172,6 +176,7 @@ Categories are keyword-based; edit `CATEGORY_KEYWORDS` in [`chatbot/utils/analyt
 │   ├── documents/              # ← put your files here (git-ignored)
 │   ├── urls.txt                # optional web pages to index
 │   └── vector_store/           # built index (git-ignored)
+├── .github/workflows/          # CI: runs tests on every push
 ├── Dockerfile, docker-compose.yml
 ├── requirements.txt
 └── .env.example
@@ -179,10 +184,19 @@ Categories are keyword-based; edit `CATEGORY_KEYWORDS` in [`chatbot/utils/analyt
 
 ## Deploying to production
 
-1. Set `DEBUG=False`, a strong `SECRET_KEY`, `ALLOWED_HOSTS=your-domain.com` and `CSRF_TRUSTED_ORIGINS=https://your-domain.com`.
+1. Set `DEBUG=False`, a strong `SECRET_KEY`, `ALLOWED_HOSTS=your-domain.com`, `CSRF_TRUSTED_ORIGINS=https://your-domain.com` and `SECURE_HTTPS=True`.
 2. Run with Docker (`docker compose up -d`) or `gunicorn Unibot.wsgi:application --workers 1 --threads 4 --timeout 180` (Linux).
 3. Put it behind a reverse proxy with HTTPS (Nginx, Caddy, or a platform like Render/Railway).
+   Verify with `python manage.py check --deploy`.
 4. Keep **one worker** per container: each worker loads the embedding model (~1 GB RAM) and keeps its own rate-limit counter. Scale with more containers + a shared cache if needed.
+
+## Running tests
+
+```bash
+python manage.py test
+```
+
+Tests mock the LLM pipeline, so they need no API key, model or index. They also run automatically on every push via GitHub Actions.
 
 ## Troubleshooting
 

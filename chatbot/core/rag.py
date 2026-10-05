@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from django.conf import settings
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 _DEFAULT_EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/e5-base-v2")
-_VECTOR_STORE_PATH = Path(os.getenv("VECTOR_STORE_PATH", "data/vector_store"))
+_VECTOR_STORE_PATH = settings.BASE_DIR / os.getenv("VECTOR_STORE_PATH", "data/vector_store")
 _DEFAULT_TOP_K = int(os.getenv("TOP_K_DOCS", "10"))
 _DEFAULT_THRESHOLD = float(os.getenv("MIN_SIMILARITY_THRESHOLD", "0.28"))
 _LLM_MODEL = os.getenv("GENAI_MODEL_NAME", "models/gemini-2.5-flash")

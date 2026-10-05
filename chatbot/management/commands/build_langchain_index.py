@@ -9,6 +9,7 @@ import os
 import shutil
 from pathlib import Path
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from chatbot.ingestion.document_processor import LangChainIngestion, VECTOR_STORE_PATH
@@ -18,9 +19,9 @@ class Command(BaseCommand):
     help = "Build (or append to) the FAISS index from your documents folder and web URLs"
 
     def add_arguments(self, parser):
-        parser.add_argument('--docs-dir', default=os.getenv('DOCUMENTS_PATH', 'data/documents'),
+        parser.add_argument('--docs-dir', default=str(settings.BASE_DIR / os.getenv('DOCUMENTS_PATH', 'data/documents')),
                             help='Folder with .pdf/.txt/.md files (default: data/documents)')
-        parser.add_argument('--urls-file', default=os.getenv('WEB_URLS_FILE', 'data/urls.txt'),
+        parser.add_argument('--urls-file', default=str(settings.BASE_DIR / os.getenv('WEB_URLS_FILE', 'data/urls.txt')),
                             help='Text file with one URL per line (default: data/urls.txt)')
         parser.add_argument('--append', action='store_true', help='Append to existing index instead of rebuilding')
         parser.add_argument('--skip-docs', action='store_true', help='Skip documents folder')
