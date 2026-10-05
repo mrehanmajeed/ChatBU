@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      DEBUG: "False"
+    volumes:
+      - ./data:/app/data   # your documents, the index, the SQLite DB and the model cache
+    restart: unless-stopped

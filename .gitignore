@@ -1,0 +1,27 @@
+# Secrets
+.env
+
+# Virtual env
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Your private data (documents, built index, database, model cache)
+data/documents/*
+!data/documents/.gitkeep
+data/vector_store/
+data/vector_store_tmp/
+data/db.sqlite3
+data/.hf_cache/
+
+# Django
+staticfiles/
+
+# IDE / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
