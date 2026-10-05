@@ -13,7 +13,7 @@ Use it for a university, company handbook, product docs, policies, FAQs — anyt
 - 🔍 **OCR** for scanned PDFs (when Tesseract is installed)
 - 💬 **Chat web UI** at `/` and a **REST API** at `/chatbot/ask/`
 - 📚 **Source citations** with every answer
-- 🌐 Answers in the language of the question
+- 🌐 Answers in the language of the question (English, Urdu, Roman Urdu, ...)
 - 🛡️ **Rate limiting** per IP (protects your LLM API quota)
 - 📊 **Query analytics** stored in the database (category, latency, confidence) — connect Power BI, Metabase, or plain SQL
 - 🗄️ SQLite by default (zero setup), MySQL or PostgreSQL optional
@@ -206,7 +206,7 @@ Tests mock the LLM pipeline, so they need no API key, model or index. They also 
 | `API key not valid` in logs | Check `GOOGLE_API_KEY` in `.env` |
 | Answers ignore new documents | Rebuild the index and restart the server |
 | `Bad Request (400)` with `DEBUG=False` | Add your domain to `ALLOWED_HOSTS` |
-| First question is slow | Normal — models load on the first request |
+| First answer takes ~20s after start | Models load in the background at startup; wait until the log stops, or check `/chatbot/health/` |
 
 ## License
 

@@ -46,7 +46,8 @@ _SYSTEM_PROMPT = (
     "4. If the context only covers a related topic, say what IS available and how it relates.\n"
     "5. If the context has no relevant information, say you don't have information about that "
     "in the documents. Never make up facts that are not in the context.\n"
-    "6. Answer in the same language the question was asked in."
+    "6. Answer in the same language AND script as the question. Roman Urdu (Urdu written in English "
+    "letters) must be answered in Roman Urdu, never in Hindi/Devanagari or Urdu script."
 )
 
 
